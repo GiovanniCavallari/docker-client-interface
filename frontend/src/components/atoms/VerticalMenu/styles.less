@@ -1,0 +1,24 @@
+@line-color: #e1e1e1;
+@container-color: #f7f7fa;
+
+.di-vertical-menu-container {
+  height: 100%;
+  background-color: @container-color;
+  border-right: 1px solid @line-color;
+  box-shadow: 8px 0 10px -8px @line-color;
+
+  .di-vertical-menu-nav {
+    margin: 0px;
+  }
+
+  .di-vertical-menu-item {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: 1px solid @line-color;
+
+    svg {
+      margin: 0 12px 0 0;
+    }
+  }
+}

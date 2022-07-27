@@ -1,0 +1,42 @@
+@text-color: #3483fa;
+@background-color: rgba(65, 137, 230, .15);
+@background-hover-color: rgba(65, 137, 230, .25);
+
+@list-backgroud: #fff;
+@list-hover-backgroud: #f5f5f5;
+@list-color: #575757;
+@list-focus-color: rgba(0, 0, 0, .8);
+
+.di-drowpdown {
+  button {
+    color: @text-color;
+    background-color: @background-color;
+    transition: 0.3 ease-in-out all;
+
+    &:hover,
+    &:focus {
+      color: @text-color;
+      background-color: @background-hover-color;
+    }
+  }
+
+  ul {
+    li {
+      display: flex;
+      align-items: center;
+      color: @list-color !important;
+      background-color: @list-backgroud !important;
+      transition: 0.3 ease-in-out all;
+
+      svg {
+        margin: 0 6px 0 0;
+      }
+
+      &:hover,
+      &:focus {
+        background-color: @list-hover-backgroud !important;
+        color: @list-color;
+      }
+    }
+  }
+}
