@@ -6,11 +6,11 @@ import api from '../../../services/api';
 
 import Modal from '../../atoms/Modal';
 import Drawer from '../../atoms/Drawer';
+import Loader from '../../atoms/Loader';
 import JsonInspector from '../../atoms/JsonInspector';
 import ContainerItem from '../../molecules/ContainerItem';
 
 import './styles.less';
-import { Loader } from 'rsuite';
 
 const Container = ({ container }) => {
   const [openModal, setOpenModal] = useState(false);
