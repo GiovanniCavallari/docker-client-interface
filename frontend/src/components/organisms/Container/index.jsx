@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Props from 'prop-types';
+import { mutate as globalMutate } from 'swr';
 import { FaPlay, FaStop, FaTrashAlt, FaInfoCircle, FaReceipt } from 'react-icons/fa';
+import api from '../../../services/api';
 
 import Modal from '../../atoms/Modal';
 import Drawer from '../../atoms/Drawer';
@@ -8,43 +10,77 @@ import JsonInspector from '../../atoms/JsonInspector';
 import ContainerItem from '../../molecules/ContainerItem';
 
 import './styles.less';
+import { Loader } from 'rsuite';
 
 const Container = ({ container }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
+
+  const [logs, setLogs] = useState('');
+  const [loadingLogs, setLoadingLogs] = useState(false);
+  const [openLogs, setOpenLogs] = useState(false);
 
   const handleModal = () => {
     setOpenModal(!openModal);
   };
 
   const handleSuccessModal = () => {
-    setOpenModal(false);
+    api.post(`/containers/${container.id}/down`).then(() => {
+      globalMutate('/containers');
+      setOpenModal(false);
+    });
   };
 
-  const handleDrawer = () => {
-    setOpenDrawer(!openDrawer);
+  const handleDetails = () => {
+    setOpenDetails(!openDetails);
+  };
+
+  const handleLogs = () => {
+    setOpenLogs(!openLogs);
+  };
+
+  const handleLogRequest = () => {
+    handleLogs();
+    setLoadingLogs(true);
+
+    api.get(`/containers/${container.id}/logs`).then((response) => {
+      setLogs(response.data.data);
+      setLoadingLogs(false);
+    });
+  };
+
+  const handleStartContainer = () => {
+    api.post(`/containers/${container.id}/start`).then(() => {
+      globalMutate('/containers');
+    });
+  };
+
+  const handleStopContainer = () => {
+    api.post(`/containers/${container.id}/stop`).then(() => {
+      globalMutate('/containers');
+    });
   };
 
   const dropdowmItems = [
     {
       text: 'Details',
       icon: <FaInfoCircle />,
-      onClick: handleDrawer,
+      onClick: handleDetails,
     },
     {
       text: 'Logs',
       icon: <FaReceipt />,
-      onClick: handleDrawer,
+      onClick: handleLogRequest,
     },
     {
       text: 'Start',
       icon: <FaPlay />,
-      onClick: () => {},
+      onClick: handleStartContainer,
     },
     {
       text: 'Stop',
       icon: <FaStop />,
-      onClick: () => {},
+      onClick: handleStopContainer,
     },
     {
       text: 'Remove',
@@ -57,8 +93,24 @@ const Container = ({ container }) => {
     <>
       <ContainerItem container={container} dropdowmItems={dropdowmItems} />
 
-      <Drawer open={openDrawer} placement="bottom" size="lg" title="Container details" onClose={handleDrawer}>
+      <Drawer
+        size="lg"
+        open={openDetails}
+        placement="bottom"
+        onClose={handleDetails}
+        title={`Details from container ${container.names[0]}`}
+      >
         <JsonInspector title={container.names[0]} data={container} />
+      </Drawer>
+
+      <Drawer
+        size="lg"
+        open={openLogs}
+        placement="bottom"
+        onClose={handleLogs}
+        title={`Logs from container ${container.names[0]} - will be loaded 5 seconds of logs`}
+      >
+        {loadingLogs ? <Loader size="md" center /> : logs}
       </Drawer>
 
       <Modal
