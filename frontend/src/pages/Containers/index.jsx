@@ -4,9 +4,9 @@ import { FaPlus } from 'react-icons/fa';
 import { useFetch } from '../../hooks/useFetch';
 
 import Card from '../../components/atoms/Card';
-import ModalForm from '../../components/molecules/ModalForm';
 import CardLoading from '../../components/molecules/CardLoading';
 import ContentHeader from '../../components/molecules/ContentHeader';
+import ModalForm from '../../components/organisms/ModalForm';
 import Container from '../../components/organisms/Container';
 import AdminTemplate from '../../components/templates/Admin';
 
