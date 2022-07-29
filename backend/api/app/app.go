@@ -63,9 +63,9 @@ func (app App) configureRoutes() {
 	app.Router.POST("/compose/:stack/down", app.ComposeHandler.Down)
 
 	app.Router.GET("/volumes", app.VolumesHandler.GetAllVolumes)
-	app.Router.POST("/volumes/prune", app.VolumesHandler.PruneVolumes)
 	app.Router.GET("/volumes/:volume", app.VolumesHandler.GetVolume)
 	app.Router.POST("/volumes/:volume/remove", app.VolumesHandler.RemoveVolume)
+	app.Router.POST("/volumes/prune", app.VolumesHandler.PruneVolumes)
 }
 
 func (app App) configureCORS() {
