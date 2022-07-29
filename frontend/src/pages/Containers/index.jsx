@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Content, Schema } from 'rsuite';
 import { FaPlus } from 'react-icons/fa';
 import { useFetch } from '../../hooks/useFetch';
 
 import Card from '../../components/atoms/Card';
+import ModalForm from '../../components/molecules/ModalForm';
 import CardLoading from '../../components/molecules/CardLoading';
 import ContentHeader from '../../components/molecules/ContentHeader';
 import Container from '../../components/organisms/Container';
-import ModalForm from '../../components/organisms/ModalForm';
 import AdminTemplate from '../../components/templates/Admin';
 
 import './styles.less';
 
 const Containers = () => {
+  const formRef = useRef();
+
   const [openModalForm, setOpenModalForm] = useState(false);
+  const [formError, setFormError] = React.useState({});
   const [formValue, setFormValue] = useState({
     name: '',
     email: '',
@@ -21,11 +24,11 @@ const Containers = () => {
   });
 
   const validation = Schema.Model({
+    password: Schema.Types.StringType().isRequired('This field is required.'),
     name: Schema.Types.StringType().isRequired('This field is required.'),
     email: Schema.Types.StringType()
-    .isEmail('Please enter a valid email address.')
-    .isRequired('This field is required.'),
-    password: Schema.Types.StringType().isRequired('This field is required.'),
+      .isEmail('Please enter a valid email address.')
+      .isRequired('This field is required.'),
   });
 
   const fields = [
@@ -59,6 +62,15 @@ const Containers = () => {
     setOpenModalForm(!openModalForm);
   };
 
+  const handleSubmit = () => {
+    if (!formRef.current.check()) {
+      console.error('Form Error: ', formError);
+      return;
+    }
+
+    console.log('Form Value: ', formValue);
+  };
+
   const onLogoClick = () => {};
 
   if (!data) {
@@ -70,14 +82,16 @@ const Containers = () => {
           </ContentHeader>
 
           <ModalForm
+            formRef={formRef}
             open={openModalForm}
             title="Create new container"
             fields={fields}
             validation={validation}
             formValue={formValue}
             buttonText="Create"
+            handleError={setFormError}
             handleClose={handleModalForm}
-            handleSubmit={handleModalForm}
+            handleSubmit={handleSubmit}
             handleFormChange={setFormValue}
           />
 
@@ -95,14 +109,16 @@ const Containers = () => {
         </ContentHeader>
 
         <ModalForm
+          formRef={formRef}
           open={openModalForm}
           title="Create new container"
           fields={fields}
           validation={validation}
           formValue={formValue}
           buttonText="Create"
+          handleError={setFormError}
           handleClose={handleModalForm}
-          handleSubmit={handleModalForm}
+          handleSubmit={handleSubmit}
           handleFormChange={setFormValue}
         />
 
