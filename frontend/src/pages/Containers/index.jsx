@@ -21,14 +21,17 @@ const Containers = () => {
     navigate(routes.CREATE_CONTAINER);
   };
 
+  const Header = () => (
+    <ContentHeader refresh title="Containers" onButtonClick={handleCreateContainer} onRefreshClick={() => mutate()}>
+      <FaPlus /> Create new container
+    </ContentHeader>
+  );
+
   if (!data) {
     return (
       <AdminTemplate>
         <Content className="di-admin-content">
-          <ContentHeader refresh title="Containers" onButtonClick={handleCreateContainer} onRefreshClick={() => mutate()}>
-            <FaPlus /> Create new container
-          </ContentHeader>
-
+          <Header />
           <CardLoading type="grid" />
         </Content>
       </AdminTemplate>
@@ -38,9 +41,7 @@ const Containers = () => {
   return (
     <AdminTemplate>
       <Content className="di-admin-content">
-        <ContentHeader refresh title="Containers" onButtonClick={handleCreateContainer} onRefreshClick={() => mutate()}>
-          <FaPlus /> Create new container
-        </ContentHeader>
+        <Header />
 
         {data.map((container, index) => (
           <Card key={index}>
