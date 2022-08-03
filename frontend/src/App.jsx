@@ -1,11 +1,11 @@
 import React from 'react';
-import Containers from './pages/Containers';
+import Router from './routes';
 
 import 'rsuite/styles/index.less';
 import './styles/global.less';
 
 function App() {
-  return <Containers />;
+  return <Router />;
 }
 
 export default App;

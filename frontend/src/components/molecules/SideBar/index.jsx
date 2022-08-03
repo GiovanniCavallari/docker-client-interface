@@ -1,16 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Sidebar } from 'rsuite';
 import { FaDocker, FaDatabase, FaThList } from 'react-icons/fa';
+import { routes } from '../../../enums/routes';
 import VerticalMenu from '../../atoms/VerticalMenu';
 
 import './styles.less';
 
 const SidebarMenu = () => {
+  const navigate = useNavigate();
+
   const menuItems = [
     {
       text: 'Containers',
       icon: <FaDocker />,
-      onClick: () => {},
+      onClick: () => navigate(routes.INDEX),
     },
     {
       text: 'Compose',

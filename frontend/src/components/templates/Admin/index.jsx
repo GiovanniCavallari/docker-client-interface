@@ -8,14 +8,14 @@ import SidebarMenu from '../../molecules/SideBar';
 
 import './styles.less';
 
-const AdminTemplate = ({ onLogoClick, children }) => {
+const AdminTemplate = ({ children }) => {
   return (
     <Container className="di-admin-template-container">
       <Header className="di-header">
         <Logo
           alt="docker logo"
           src="https://www.docker.com/wp-content/uploads/2022/03/Docker-Logo-White-RGB_Horizontal.png"
-          onClick={onLogoClick}
+          onClick={() => {}}
         />
       </Header>
 
@@ -33,7 +33,6 @@ const AdminTemplate = ({ onLogoClick, children }) => {
 
 AdminTemplate.propTypes = {
   children: Props.node.isRequired,
-  onLogoClick: Props.func.isRequired,
 };
 
 export default AdminTemplate;
