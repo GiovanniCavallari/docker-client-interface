@@ -11,7 +11,7 @@ type ContainersHandler interface {
 	GetAllContainers(ctx *gin.Context)
 	GetContainer(ctx *gin.Context)
 	GetContainerLogs(ctx *gin.Context)
-	CreateContainer(ctx *gin.Context)
+	CreateAvailableContainer(ctx *gin.Context)
 	StartContainer(ctx *gin.Context)
 	StopContainer(ctx *gin.Context)
 	RemoveContainer(ctx *gin.Context)
@@ -58,7 +58,7 @@ func (h containersHandler) GetContainerLogs(ctx *gin.Context) {
 	ctx.JSON(response.StatusCode, response)
 }
 
-func (h containersHandler) CreateContainer(ctx *gin.Context) {
+func (h containersHandler) CreateAvailableContainer(ctx *gin.Context) {
 	var uri types.ContainerNameUri
 
 	if err := ctx.ShouldBindUri(&uri); err != nil {
@@ -67,7 +67,7 @@ func (h containersHandler) CreateContainer(ctx *gin.Context) {
 		return
 	}
 
-	response := h.service.CreateContainer(ctx, uri.ContainerName)
+	response := h.service.CreateAvailableContainer(ctx, uri.ContainerName)
 	ctx.JSON(response.StatusCode, response)
 }
 

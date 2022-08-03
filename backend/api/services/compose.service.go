@@ -140,7 +140,7 @@ func (s composeService) getAvailableStacks(stack string) types.ComposeConfig {
 func (s composeService) createContainer(ctx *gin.Context, containerName string) types.ComposeContainer {
 	var data types.ContainerCreated
 
-	res := s.containersService.CreateContainer(ctx, containerName)
+	res := s.containersService.CreateAvailableContainer(ctx, containerName)
 	if res.Data != nil {
 		data = res.Data.(types.ContainerCreated)
 	}

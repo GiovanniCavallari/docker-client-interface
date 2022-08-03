@@ -18,7 +18,7 @@ type ContainersService interface {
 	GetAllContainers(ctx *gin.Context) types.Response
 	GetContainer(ctx *gin.Context, containerID string) types.Response
 	GetContainerLogs(containerID string) types.Response
-	CreateContainer(ctx *gin.Context, containerName string) types.Response
+	CreateAvailableContainer(ctx *gin.Context, containerName string) types.Response
 	StartContainer(ctx *gin.Context, containerID string) types.Response
 	StopContainer(ctx *gin.Context, containerID string) types.Response
 	RemoveContainer(ctx *gin.Context, containerID string) types.Response
@@ -73,31 +73,6 @@ func (s containersService) GetContainerLogs(containerID string) types.Response {
 	return response.OkResponse(string(bytes))
 }
 
-func (s containersService) CreateContainer(ctx *gin.Context, containerName string) types.Response {
-	containerConfig := s.validateAvailableContainers(containerName)
-	if containerConfig.Container.Image == "" {
-		return response.NotFoundResponse("Container not found")
-	}
-
-	err := s.dockerClient.ImagePull(ctx, containerConfig.Container.Image)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	container, err := s.dockerClient.ContainerCreate(ctx, containerConfig, containerConfig.Name)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	err = s.dockerClient.ContainerStart(ctx, container.ID)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	mapper := s.mapper.MapContainerCreatedBodyToResponse(container)
-	return response.CreatedResponse(mapper)
-}
-
 func (s containersService) StartContainer(ctx *gin.Context, containerID string) types.Response {
 	err := s.dockerClient.ContainerStart(ctx, containerID)
 	if err != nil {
@@ -123,6 +98,31 @@ func (s containersService) RemoveContainer(ctx *gin.Context, containerID string)
 	}
 
 	return response.OkResponse(nil)
+}
+
+func (s containersService) CreateAvailableContainer(ctx *gin.Context, containerName string) types.Response {
+	containerConfig := s.validateAvailableContainers(containerName)
+	if containerConfig.Container.Image == "" {
+		return response.NotFoundResponse("Container not found")
+	}
+
+	err := s.dockerClient.ImagePull(ctx, containerConfig.Container.Image)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	container, err := s.dockerClient.ContainerCreate(ctx, containerConfig, containerConfig.Name)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	err = s.dockerClient.ContainerStart(ctx, container.ID)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	mapper := s.mapper.MapContainerCreatedBodyToResponse(container)
+	return response.CreatedResponse(mapper)
 }
 
 func (s containersService) validateAvailableContainers(containerName string) types.ContainerConfig {
