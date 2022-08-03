@@ -25,7 +25,7 @@ const Containers = () => {
     return (
       <AdminTemplate>
         <Content className="di-admin-content">
-          <ContentHeader title="Containers" onButtonClick={handleCreateContainer} onRefreshClick={() => mutate()}>
+          <ContentHeader refresh title="Containers" onButtonClick={handleCreateContainer} onRefreshClick={() => mutate()}>
             <FaPlus /> Create new container
           </ContentHeader>
 
@@ -38,7 +38,7 @@ const Containers = () => {
   return (
     <AdminTemplate>
       <Content className="di-admin-content">
-        <ContentHeader title="Containers" onButtonClick={handleCreateContainer} onRefreshClick={() => mutate()}>
+        <ContentHeader refresh title="Containers" onButtonClick={handleCreateContainer} onRefreshClick={() => mutate()}>
           <FaPlus /> Create new container
         </ContentHeader>
 
