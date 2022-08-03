@@ -77,24 +77,7 @@ func (s containersService) GetContainerLogs(containerID string) types.Response {
 
 func (s containersService) CreateContainer(ctx *gin.Context, dto types.ContainerDto) types.Response {
 	containerConfig := entities.NewContainer(dto)
-
-	err := s.dockerClient.ImagePull(ctx, containerConfig.Container.Image)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	container, err := s.dockerClient.ContainerCreate(ctx, containerConfig, containerConfig.Name)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	err = s.dockerClient.ContainerStart(ctx, container.ID)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	mapper := s.mapper.MapContainerCreatedBodyToResponse(container)
-	return response.CreatedResponse(mapper)
+	return s.pullAndCreateAndStartContainer(ctx, containerConfig)
 }
 
 func (s containersService) StartContainer(ctx *gin.Context, containerID string) types.Response {
@@ -130,23 +113,7 @@ func (s containersService) CreateAvailableContainer(ctx *gin.Context, containerN
 		return response.NotFoundResponse("Container not found")
 	}
 
-	err := s.dockerClient.ImagePull(ctx, containerConfig.Container.Image)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	container, err := s.dockerClient.ContainerCreate(ctx, containerConfig, containerConfig.Name)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	err = s.dockerClient.ContainerStart(ctx, container.ID)
-	if err != nil {
-		return response.InternalServerErrorResponse(err)
-	}
-
-	mapper := s.mapper.MapContainerCreatedBodyToResponse(container)
-	return response.CreatedResponse(mapper)
+	return s.pullAndCreateAndStartContainer(ctx, containerConfig)
 }
 
 func (s containersService) validateAvailableContainers(containerName string) types.ContainerConfig {
@@ -164,4 +131,24 @@ func (s containersService) validateAvailableContainers(containerName string) typ
 	}
 
 	return containerConfig
+}
+
+func (s containersService) pullAndCreateAndStartContainer(ctx *gin.Context, containerConfig types.ContainerConfig) types.Response {
+	err := s.dockerClient.ImagePull(ctx, containerConfig.Container.Image)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	container, err := s.dockerClient.ContainerCreate(ctx, containerConfig, containerConfig.Name)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	err = s.dockerClient.ContainerStart(ctx, container.ID)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	mapper := s.mapper.MapContainerCreatedBodyToResponse(container)
+	return response.CreatedResponse(mapper)
 }
