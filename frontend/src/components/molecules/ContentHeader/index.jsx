@@ -5,7 +5,7 @@ import { Button } from 'rsuite';
 
 import './styles.less';
 
-const ContentHeader = ({ title, children, onButtonClick, onRefreshClick, refresh = false }) => {
+const ContentHeader = ({ title, children, onButtonClick, onRefreshClick, action = false, refresh = false }) => {
   return (
     <div className="di-title-container">
       <h3>{title}</h3>
@@ -17,9 +17,11 @@ const ContentHeader = ({ title, children, onButtonClick, onRefreshClick, refresh
           </Button>
         )}
 
-        <Button color="blue" appearance="primary" onClick={onButtonClick}>
-          {children}
-        </Button>
+        {action && (
+          <Button color="blue" appearance="primary" onClick={onButtonClick}>
+            {children}
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -28,9 +30,10 @@ const ContentHeader = ({ title, children, onButtonClick, onRefreshClick, refresh
 ContentHeader.propTypes = {
   title: Props.string.isRequired,
   children: Props.node.isRequired,
-  onButtonClick: Props.func.isRequired,
-  onRefreshClick: Props.func,
+  action: Props.bool,
   refresh: Props.bool,
+  onButtonClick: Props.func,
+  onRefreshClick: Props.func,
 };
 
 export default ContentHeader;

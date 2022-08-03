@@ -11,9 +11,7 @@ const CreateContainer = () => {
   return (
     <AdminTemplate>
       <Content className="di-admin-content">
-        <ContentHeader title="Create new container" onButtonClick={() => {}} onRefreshClick={() => {}}>
-          <FaPlus /> Create new container
-        </ContentHeader>
+        <ContentHeader title="Create new container" />
       </Content>
     </AdminTemplate>
   );
