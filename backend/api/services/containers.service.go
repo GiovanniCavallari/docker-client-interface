@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/GiovanniCavallari/docker-interface/api/clients"
+	"github.com/GiovanniCavallari/docker-interface/api/entities"
 	"github.com/GiovanniCavallari/docker-interface/api/helpers/response"
 	"github.com/GiovanniCavallari/docker-interface/api/mappers"
 	"github.com/GiovanniCavallari/docker-interface/api/types"
@@ -18,6 +19,7 @@ type ContainersService interface {
 	GetAllContainers(ctx *gin.Context) types.Response
 	GetContainer(ctx *gin.Context, containerID string) types.Response
 	GetContainerLogs(containerID string) types.Response
+	CreateContainer(ctx *gin.Context, dto types.ContainerDto) types.Response
 	CreateAvailableContainer(ctx *gin.Context, containerName string) types.Response
 	StartContainer(ctx *gin.Context, containerID string) types.Response
 	StopContainer(ctx *gin.Context, containerID string) types.Response
@@ -71,6 +73,28 @@ func (s containersService) GetContainerLogs(containerID string) types.Response {
 
 	bytes, _ := io.ReadAll(reader)
 	return response.OkResponse(string(bytes))
+}
+
+func (s containersService) CreateContainer(ctx *gin.Context, dto types.ContainerDto) types.Response {
+	containerConfig := entities.NewContainer(dto)
+
+	err := s.dockerClient.ImagePull(ctx, containerConfig.Container.Image)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	container, err := s.dockerClient.ContainerCreate(ctx, containerConfig, containerConfig.Name)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	err = s.dockerClient.ContainerStart(ctx, container.ID)
+	if err != nil {
+		return response.InternalServerErrorResponse(err)
+	}
+
+	mapper := s.mapper.MapContainerCreatedBodyToResponse(container)
+	return response.CreatedResponse(mapper)
 }
 
 func (s containersService) StartContainer(ctx *gin.Context, containerID string) types.Response {

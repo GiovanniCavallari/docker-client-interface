@@ -11,6 +11,7 @@ type ContainersHandler interface {
 	GetAllContainers(ctx *gin.Context)
 	GetContainer(ctx *gin.Context)
 	GetContainerLogs(ctx *gin.Context)
+	CreateContainer(ctx *gin.Context)
 	CreateAvailableContainer(ctx *gin.Context)
 	StartContainer(ctx *gin.Context)
 	StopContainer(ctx *gin.Context)
@@ -55,6 +56,19 @@ func (h containersHandler) GetContainerLogs(ctx *gin.Context) {
 	}
 
 	response := h.service.GetContainerLogs(uri.ContainerID)
+	ctx.JSON(response.StatusCode, response)
+}
+
+func (h containersHandler) CreateContainer(ctx *gin.Context) {
+	var dto types.ContainerDto
+
+	if err := ctx.BindJSON(&dto); err != nil {
+		response := response.BadRequestResponse(err)
+		ctx.JSON(response.StatusCode, response)
+		return
+	}
+
+	response := h.service.CreateContainer(ctx, dto)
 	ctx.JSON(response.StatusCode, response)
 }
 

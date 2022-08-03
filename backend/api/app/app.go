@@ -51,6 +51,7 @@ func (app App) configureRoutes() {
 
 	app.Router.GET("/containers/:container", app.ContainersHandler.GetContainer)
 	app.Router.GET("/containers/:container/logs", app.ContainersHandler.GetContainerLogs)
+	app.Router.POST("/containers", app.ContainersHandler.CreateContainer)
 	app.Router.POST("/containers/:container/start", app.ContainersHandler.StartContainer)
 	app.Router.POST("/containers/:container/stop", app.ContainersHandler.StopContainer)
 	app.Router.POST("/containers/:container/down", app.ContainersHandler.RemoveContainer)
