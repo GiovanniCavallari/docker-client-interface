@@ -16,7 +16,7 @@ const CreateContainer = () => {
       const names = response.data.data.map((container) => container.names[0]);
       setContainers(names);
     });
-  });
+  }, []);
 
   return (
     <AdminTemplate>
