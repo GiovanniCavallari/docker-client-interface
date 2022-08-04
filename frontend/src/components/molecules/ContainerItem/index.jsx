@@ -52,6 +52,7 @@ ContainerItem.propTypes = {
     id: Props.string.isRequired,
     names: Props.arrayOf(Props.string).isRequired,
     image: Props.string.isRequired,
+    state: Props.string.isRequired,
     status: Props.string.isRequired,
     created: Props.number.isRequired,
   }).isRequired,

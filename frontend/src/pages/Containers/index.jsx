@@ -22,7 +22,13 @@ const Containers = () => {
   };
 
   const Header = () => (
-    <ContentHeader refresh action title="Containers" onButtonClick={handleCreateContainer} onRefreshClick={() => mutate()}>
+    <ContentHeader
+      refresh
+      action
+      title="Containers"
+      onButtonClick={handleCreateContainer}
+      onRefreshClick={() => mutate()}
+    >
       <FaPlus /> Create new container
     </ContentHeader>
   );

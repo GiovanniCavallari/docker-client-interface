@@ -1,10 +1,31 @@
 @content-color: #f7f7fa;
+@colspan12-space: 8px;
 
 p {
   margin-block-start: 0;
   margin-block-end: 0;
   overflow-wrap: break-word;
   word-break: break-word;
+}
+
+label {
+  display: block;
+  padding-left: 2px;
+  margin-bottom: 2px;
+}
+
+.di-mb-16 {
+  margin-bottom: 16px !important;
+}
+
+.di-colspan-12 {
+  &:first-child {
+    padding-right: @colspan12-space;
+  }
+
+  &:last-child {
+    padding-left: @colspan12-space;
+  }
 }
 
 .di-admin-content-container {

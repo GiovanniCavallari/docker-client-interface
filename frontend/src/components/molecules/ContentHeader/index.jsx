@@ -29,7 +29,7 @@ const ContentHeader = ({ title, children, onButtonClick, onRefreshClick, action 
 
 ContentHeader.propTypes = {
   title: Props.string.isRequired,
-  children: Props.node.isRequired,
+  children: Props.node,
   action: Props.bool,
   refresh: Props.bool,
   onButtonClick: Props.func,

@@ -119,7 +119,7 @@ const Container = ({ container }) => {
         title="Remove container"
         text={
           <p>
-            Are you sure you want to remove the container <b>{container.name}</b>?
+            Are you sure you want to remove the container <b>{container.names[0]}</b>?
           </p>
         }
       />
