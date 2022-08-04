@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Sidebar } from 'rsuite';
 import { FaDocker, FaDatabase, FaThList } from 'react-icons/fa';
 import { routes } from '../../../enums/routes';
-import VerticalMenu from '../../atoms/VerticalMenu';
 
-import './styles.less';
+import VerticalMenu from '../../atoms/VerticalMenu';
 
 const SidebarMenu = () => {
   const navigate = useNavigate();

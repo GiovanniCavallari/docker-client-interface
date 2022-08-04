@@ -2,8 +2,6 @@ import React from 'react';
 import Props from 'prop-types';
 import { Button, Drawer as RsuiteDrawer } from 'rsuite';
 
-import './styles.less';
-
 const Drawer = ({ open, size, title, placement, children, onClose }) => {
   return (
     <RsuiteDrawer size={size} placement={placement} open={open} onClose={onClose}>

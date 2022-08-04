@@ -1,6 +1,7 @@
 import React from 'react';
 import Props from 'prop-types';
 import { FlexboxGrid, Tag } from 'rsuite';
+
 import Dropdown from '../../atoms/Dropdown';
 
 import './styles.less';

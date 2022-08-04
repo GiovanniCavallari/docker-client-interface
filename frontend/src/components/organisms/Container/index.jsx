@@ -10,8 +10,6 @@ import Loader from '../../atoms/Loader';
 import JsonInspector from '../../atoms/JsonInspector';
 import ContainerItem from '../../molecules/ContainerItem';
 
-import './styles.less';
-
 const Container = ({ container }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);

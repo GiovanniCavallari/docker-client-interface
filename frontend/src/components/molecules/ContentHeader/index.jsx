@@ -1,7 +1,7 @@
 import React from 'react';
 import Props from 'prop-types';
-import { FaHistory } from 'react-icons/fa';
 import { Button } from 'rsuite';
+import { FaHistory } from 'react-icons/fa';
 
 import './styles.less';
 

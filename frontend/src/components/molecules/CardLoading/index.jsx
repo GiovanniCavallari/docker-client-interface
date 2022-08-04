@@ -1,9 +1,8 @@
 import React from 'react';
 import Props from 'prop-types';
 import { Placeholder } from 'rsuite';
-import Card from '../../atoms/Card';
 
-import './styles.less';
+import Card from '../../atoms/Card';
 
 const CardLoading = ({ type }) => {
   let children = <></>;
