@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import Props from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Button, FlexboxGrid } from 'rsuite';
-import { FaPlus, FaArrowRight } from 'react-icons/fa';
+import { FaPlus, FaArrowRight, FaEquals } from 'react-icons/fa';
 import { routes } from '../../../enums/routes';
 import { baseEnv, baseMount, basePort } from '../../../configs/createContainer';
 
 import Card from '../../atoms/Card';
 import Input from '../../atoms/Input';
 import Select from '../../atoms/Select';
-import InputGroup from '../../molecules/InputGroup';
 import InputDouble from '../../molecules/InputDouble';
 
 import './styles.less';
@@ -74,21 +73,42 @@ const CreateContainerForm = ({ containers }) => {
   };
 
   const handleSubmit = () => {
-    const environment = envList.map((env) => `${env.first.value.toUpperCase()}=${env.second.value}`);
+    const environment = envList.map((env) => {
+      const firstValue = env.first.value;
+      const secondValue = env.first.value;
 
-    const ports = portList.map((port) => ({
-      host_port: port.second.value,
-      container_port: port.first.value,
-    }));
+      if (firstValue && secondValue) {
+        return `${env.first.value.toUpperCase()}=${env.second.value}`;
+      }
+    });
 
-    const mounts = mountList.map((mount) => ({
-      name: mount.first.value,
-      target: mount.second.value,
-    }));
+    const ports = portList.map((port) => {
+      const firstValue = port.first.value;
+      const secondValue = port.first.value;
 
+      if (firstValue && secondValue) {
+        return {
+          host_port: port.second.value,
+          container_port: port.first.value,
+        };
+      }
+    });
+
+    const mounts = mountList.map((mount) => {
+      const firstValue = mount.first.value;
+      const secondValue = mount.first.value;
+
+      if (firstValue && secondValue) {
+        return {
+          name: mount.first.value,
+          target: mount.second.value,
+        };
+      }
+    });
+
+    console.log('env: ', environment);
     console.log('ports: ', ports);
     console.log('mounts: ', mounts);
-    console.log('env: ', environment);
     console.log('formValue: ', formValue);
   };
 
@@ -167,13 +187,14 @@ const CreateContainerForm = ({ containers }) => {
 
       <Card title="Environment">
         {envList.map((env, index) => (
-          <InputGroup
+          <InputDouble
             key={index}
-            separator="="
             first={env.first}
             second={env.second}
             onChange={(value, e) => handleEnvChange(e, value, index)}
             className="di-create-container-input-group"
+            separator={<FaEquals />}
+            hasSeparator
           />
         ))}
 

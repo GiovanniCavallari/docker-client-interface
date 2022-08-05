@@ -5,6 +5,8 @@ import { FlexboxGrid } from 'rsuite';
 import Input from '../../atoms/Input';
 
 const InputDouble = ({ first, second, onChange, className, separator, hasSeparator = false }) => {
+  const spacing = first.label || second.label ? 'di-top-32' : 'di-top-16';
+
   return (
     <FlexboxGrid className={className}>
       <FlexboxGrid.Item colspan={11} className="di-colspan-12">
@@ -12,7 +14,7 @@ const InputDouble = ({ first, second, onChange, className, separator, hasSeparat
       </FlexboxGrid.Item>
 
       {hasSeparator && (
-        <FlexboxGrid.Item colspan={2} className="di-flex-centered di-top-32">
+        <FlexboxGrid.Item colspan={2} className={`di-flex-centered ${spacing}`}>
           {separator}
         </FlexboxGrid.Item>
       )}
