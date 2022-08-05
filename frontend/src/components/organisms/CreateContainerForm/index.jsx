@@ -29,23 +29,16 @@ const CreateContainerForm = ({ containers }) => {
     setFormValue({ ...formValue, [input]: value });
   };
 
-  const handleAddNewItem = (item) => {
-    switch (item) {
-      case 'env':
-        setEnvList([...envList, baseEnv]);
-        break;
+  const handleAddNewEnv = () => {
+    setEnvList([...envList, baseEnv]);
+  };
 
-      case 'port':
-        setPortList([...portList, basePort]);
-        break;
+  const handleAddNewPort = () => {
+    setPortList([...portList, basePort]);
+  };
 
-      case 'mount':
-        setMountList([...mountList, baseMount]);
-        break;
-
-      default:
-        break;
-    }
+  const handleAddNewMount = () => {
+    setMountList([...mountList, baseMount]);
   };
 
   const handleEnvChange = (e, value, index) => {
@@ -162,7 +155,7 @@ const CreateContainerForm = ({ containers }) => {
           />
         ))}
 
-        <Button appearance="ghost" className="di-create-container-add-item" onClick={() => handleAddNewItem('port')}>
+        <Button appearance="ghost" className="di-create-container-add-item" onClick={handleAddNewPort}>
           <FaPlus /> Add new port
         </Button>
       </Card>
@@ -180,7 +173,7 @@ const CreateContainerForm = ({ containers }) => {
           />
         ))}
 
-        <Button appearance="ghost" className="di-create-container-add-item" onClick={() => handleAddNewItem('mount')}>
+        <Button appearance="ghost" className="di-create-container-add-item" onClick={handleAddNewMount}>
           <FaPlus /> Add new volume
         </Button>
       </Card>
@@ -198,7 +191,7 @@ const CreateContainerForm = ({ containers }) => {
           />
         ))}
 
-        <Button appearance="ghost" className="di-create-container-add-item" onClick={() => handleAddNewItem('env')}>
+        <Button appearance="ghost" className="di-create-container-add-item" onClick={handleAddNewEnv}>
           <FaPlus /> Add new env
         </Button>
       </Card>
