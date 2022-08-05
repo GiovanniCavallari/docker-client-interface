@@ -5,6 +5,7 @@ import { Button, FlexboxGrid } from 'rsuite';
 import { FaPlus, FaArrowRight, FaEquals } from 'react-icons/fa';
 import { routes } from '../../../enums/routes';
 import { validateList } from '../../../helpers/validateList';
+import api from '../../../services/api';
 
 import Card from '../../atoms/Card';
 import Input from '../../atoms/Input';
@@ -125,7 +126,7 @@ const CreateContainerForm = ({ containers }) => {
 
     const exposed_ports = validateList(portList).map((item) => ({
       host_port: item.second.value,
-      container_item: item.first.value,
+      container_port: item.first.value,
     }));
 
     const mounts = validateList(mountList).map((item) => ({
@@ -133,16 +134,18 @@ const CreateContainerForm = ({ containers }) => {
       target: item.second.value,
     }));
 
-    const payload = {
-      name,
-      image,
-      links,
-      env,
-      mounts,
-      exposed_ports,
-    };
-
-    console.log(payload);
+    api
+      .post('/containers', {
+        name,
+        image,
+        env,
+        mounts,
+        exposed_ports,
+        links: links || [],
+      })
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   return (
