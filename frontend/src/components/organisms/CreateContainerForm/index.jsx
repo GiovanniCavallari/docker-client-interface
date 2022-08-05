@@ -4,55 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { Button, FlexboxGrid } from 'rsuite';
 import { FaPlus, FaArrowRight } from 'react-icons/fa';
 import { routes } from '../../../enums/routes';
+import { baseEnv, baseMount, basePort } from '../../../configs/createContainer';
 
 import Card from '../../atoms/Card';
 import Input from '../../atoms/Input';
 import Select from '../../atoms/Select';
 import InputGroup from '../../molecules/InputGroup';
-
-import './styles.less';
 import InputDouble from '../../molecules/InputDouble';
 
+import './styles.less';
+
 const CreateContainerForm = ({ containers }) => {
-  const baseEnv = {
-    first: {
-      name: 'first',
-      uppercase: true,
-      value: '',
-    },
-    second: {
-      name: 'second',
-      uppercase: false,
-      value: '',
-    },
-  };
-
-  const basePort = {
-    first: {
-      name: 'first',
-      label: 'Container port',
-      value: '',
-    },
-    second: {
-      name: 'second',
-      label: 'Host port',
-      value: '',
-    },
-  };
-
-  const baseMount = {
-    first: {
-      name: 'first',
-      label: 'Name',
-      value: '',
-    },
-    second: {
-      name: 'second',
-      label: 'Target',
-      value: '',
-    },
-  };
-
   const navigate = useNavigate();
 
   const [envList, setEnvList] = useState([baseEnv]);
@@ -68,16 +30,23 @@ const CreateContainerForm = ({ containers }) => {
     setFormValue({ ...formValue, [input]: value });
   };
 
-  const handleAddNewEnv = () => {
-    setEnvList([...envList, baseEnv]);
-  };
+  const handleAddNewItem = (item) => {
+    switch (item) {
+      case 'env':
+        setEnvList([...envList, baseEnv]);
+        break;
 
-  const handleAddNewPort = () => {
-    setPortList([...portList, basePort]);
-  };
+      case 'port':
+        setPortList([...portList, basePort]);
+        break;
 
-  const handleAddNewMount = () => {
-    setMountList([...mountList, baseMount]);
+      case 'mount':
+        setMountList([...mountList, baseMount]);
+        break;
+
+      default:
+        break;
+    }
   };
 
   const handleEnvChange = (e, value, index) => {
@@ -173,7 +142,7 @@ const CreateContainerForm = ({ containers }) => {
           />
         ))}
 
-        <Button appearance="ghost" className="di-create-container-add-item" onClick={handleAddNewPort}>
+        <Button appearance="ghost" className="di-create-container-add-item" onClick={() => handleAddNewItem('port')}>
           <FaPlus /> Add new port
         </Button>
       </Card>
@@ -191,7 +160,7 @@ const CreateContainerForm = ({ containers }) => {
           />
         ))}
 
-        <Button appearance="ghost" className="di-create-container-add-item" onClick={handleAddNewMount}>
+        <Button appearance="ghost" className="di-create-container-add-item" onClick={() => handleAddNewItem('mount')}>
           <FaPlus /> Add new volume
         </Button>
       </Card>
@@ -208,7 +177,7 @@ const CreateContainerForm = ({ containers }) => {
           />
         ))}
 
-        <Button appearance="ghost" className="di-create-container-add-item" onClick={handleAddNewEnv}>
+        <Button appearance="ghost" className="di-create-container-add-item" onClick={() => handleAddNewItem('env')}>
           <FaPlus /> Add new env
         </Button>
       </Card>
