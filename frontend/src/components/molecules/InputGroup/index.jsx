@@ -4,7 +4,7 @@ import { FlexboxGrid } from 'rsuite';
 
 import Input from '../../atoms/Input';
 
-const InputDouble = ({ first, second, onChange, className, separator, hasSeparator = false }) => {
+const InputGroup = ({ first, second, onChange, className, separator, hasSeparator = false }) => {
   const spacing = first.label || second.label ? 'di-top-32' : 'di-top-16';
 
   return (
@@ -32,7 +32,7 @@ const inputProps = Props.shape({
   label: Props.string,
 });
 
-InputDouble.propTypes = {
+InputGroup.propTypes = {
   first: inputProps.isRequired,
   second: inputProps.isRequired,
   onChange: Props.func.isRequired,
@@ -41,4 +41,4 @@ InputDouble.propTypes = {
   hasSeparator: Props.bool,
 };
 
-export default InputDouble;
+export default InputGroup;

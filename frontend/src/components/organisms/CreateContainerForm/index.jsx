@@ -9,7 +9,7 @@ import { baseEnv, baseMount, basePort } from '../../../configs/createContainer';
 import Card from '../../atoms/Card';
 import Input from '../../atoms/Input';
 import Select from '../../atoms/Select';
-import InputDouble from '../../molecules/InputDouble';
+import InputGroup from '../../molecules/InputGroup';
 
 import './styles.less';
 
@@ -151,7 +151,7 @@ const CreateContainerForm = ({ containers }) => {
 
       <Card title="Ports">
         {portList.map((port, index) => (
-          <InputDouble
+          <InputGroup
             key={index}
             first={port.first}
             second={port.second}
@@ -169,7 +169,7 @@ const CreateContainerForm = ({ containers }) => {
 
       <Card title="Volumes">
         {mountList.map((mount, index) => (
-          <InputDouble
+          <InputGroup
             key={index}
             first={mount.first}
             second={mount.second}
@@ -187,7 +187,7 @@ const CreateContainerForm = ({ containers }) => {
 
       <Card title="Environment">
         {envList.map((env, index) => (
-          <InputDouble
+          <InputGroup
             key={index}
             first={env.first}
             second={env.second}
