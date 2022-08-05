@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, FlexboxGrid } from 'rsuite';
 import { FaPlus, FaArrowRight, FaEquals } from 'react-icons/fa';
 import { routes } from '../../../enums/routes';
+import { validateList } from '../../../helpers/validateList';
 
 import Card from '../../atoms/Card';
 import Input from '../../atoms/Input';
@@ -118,43 +119,30 @@ const CreateContainerForm = ({ containers }) => {
   };
 
   const handleSubmit = () => {
-    const environment = envList.map((env) => {
-      const firstValue = env.first.value;
-      const secondValue = env.first.value;
+    const { name, image, links } = formValue;
 
-      if (firstValue && secondValue) {
-        return `${env.first.value.toUpperCase()}=${env.second.value}`;
-      }
-    });
+    const env = validateList(envList).map((item) => `${item.first.value.toUpperCase()}=${item.second.value}`);
 
-    const ports = portList.map((port) => {
-      const firstValue = port.first.value;
-      const secondValue = port.first.value;
+    const exposed_ports = validateList(portList).map((item) => ({
+      host_port: item.second.value,
+      container_item: item.first.value,
+    }));
 
-      if (firstValue && secondValue) {
-        return {
-          host_port: port.second.value,
-          container_port: port.first.value,
-        };
-      }
-    });
+    const mounts = validateList(mountList).map((item) => ({
+      name: item.first.value,
+      target: item.second.value,
+    }));
 
-    const mounts = mountList.map((mount) => {
-      const firstValue = mount.first.value;
-      const secondValue = mount.first.value;
+    const payload = {
+      name,
+      image,
+      links,
+      env,
+      mounts,
+      exposed_ports,
+    };
 
-      if (firstValue && secondValue) {
-        return {
-          name: mount.first.value,
-          target: mount.second.value,
-        };
-      }
-    });
-
-    console.log('env: ', environment);
-    console.log('ports: ', ports);
-    console.log('mounts: ', mounts);
-    console.log('formValue: ', formValue);
+    console.log(payload);
   };
 
   return (
