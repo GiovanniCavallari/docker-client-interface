@@ -2,13 +2,14 @@ import React from 'react';
 import Props from 'prop-types';
 import { SelectPicker, TagPicker } from 'rsuite';
 
-const Select = ({ label, value, placeholder, onChange, multipleOptions = false, items = [] }) => {
+const Select = ({ label, value, error, placeholder, onChange, multipleOptions = false, items = [] }) => {
   const data = items.map((item) => ({
     label: item,
     value: item,
   }));
 
   const styles = { cursor: 'pointer' };
+  const errorClass = error ? 'di-select-error' : '';
 
   return (
     <>
@@ -20,6 +21,7 @@ const Select = ({ label, value, placeholder, onChange, multipleOptions = false, 
           data={data}
           value={value}
           style={styles}
+          className={errorClass}
           placeholder={placeholder}
           onChange={onChange}
           searchable={false}
@@ -30,6 +32,7 @@ const Select = ({ label, value, placeholder, onChange, multipleOptions = false, 
           data={data}
           value={value}
           style={styles}
+          className={errorClass}
           placeholder={placeholder}
           onChange={onChange}
           searchable={false}
@@ -42,6 +45,7 @@ const Select = ({ label, value, placeholder, onChange, multipleOptions = false, 
 Select.propTypes = {
   label: Props.string,
   value: Props.any,
+  error: Props.bool,
   items: Props.arrayOf(Props.string).isRequired,
   placeholder: Props.string,
   multipleOptions: Props.bool,

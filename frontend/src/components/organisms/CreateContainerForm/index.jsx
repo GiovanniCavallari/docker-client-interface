@@ -60,13 +60,32 @@ const CreateContainerForm = ({ containers }) => {
   const [portList, setPortList] = useState([basePort]);
   const [mountList, setMountList] = useState([baseMount]);
   const [formValue, setFormValue] = useState({
-    name: '',
-    image: '',
-    links: null,
+    name: {
+      value: '',
+      error: false,
+      required: true,
+    },
+    image: {
+      value: '',
+      error: false,
+      required: true,
+    },
+    links: {
+      value: null,
+      error: false,
+      required: false,
+    },
   });
 
   const handleFormChange = (input, value) => {
-    setFormValue({ ...formValue, [input]: value });
+    const newInput = formValue[input];
+    newInput.value = value;
+    newInput.error = false;
+
+    setFormValue({
+      ...formValue,
+      [input]: newInput,
+    });
   };
 
   const handleAddNewItem = (item) => {
@@ -120,15 +139,11 @@ const CreateContainerForm = ({ containers }) => {
   };
 
   const handleSubmit = () => {
-    const { name, image, links } = formValue;
-
     const env = validateList(envList).map((item) => `${item.first.value.toUpperCase()}=${item.second.value}`);
-
     const exposed_ports = validateList(portList).map((item) => ({
       host_port: item.second.value,
       container_port: item.first.value,
     }));
-
     const mounts = validateList(mountList).map((item) => ({
       name: item.first.value,
       target: item.second.value,
@@ -136,12 +151,12 @@ const CreateContainerForm = ({ containers }) => {
 
     api
       .post('/containers', {
-        name,
-        image,
         env,
         mounts,
         exposed_ports,
-        links: links || [],
+        name: formValue.name.value,
+        image: formValue.image.value,
+        links: formValue.links.value || [],
       })
       .then((response) => {
         console.log(response);
@@ -155,7 +170,8 @@ const CreateContainerForm = ({ containers }) => {
           <FlexboxGrid.Item colspan={12} className="di-colspan-12">
             <Input
               label="Name"
-              value={formValue.name}
+              value={formValue.name.value}
+              error={formValue.name.error}
               placeholder="Type here..."
               onChange={(value) => handleFormChange('name', value)}
             />
@@ -164,7 +180,8 @@ const CreateContainerForm = ({ containers }) => {
           <FlexboxGrid.Item colspan={12} className="di-colspan-12">
             <Input
               label="Image"
-              value={formValue.image}
+              value={formValue.image.value}
+              error={formValue.image.error}
               placeholder="Type here..."
               onChange={(value) => handleFormChange('image', value)}
             />
@@ -176,7 +193,8 @@ const CreateContainerForm = ({ containers }) => {
             <Select
               label="Links"
               items={containers}
-              value={formValue.links}
+              value={formValue.links.value}
+              error={formValue.links.error}
               placeholder="Select container links"
               onChange={(value) => handleFormChange('links', value)}
               multipleOptions
