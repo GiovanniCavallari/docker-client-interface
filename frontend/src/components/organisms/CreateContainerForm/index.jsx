@@ -77,10 +77,10 @@ const CreateContainerForm = ({ containers }) => {
     },
   });
 
-  const handleFormChange = (input, value) => {
+  const handleFormChange = (input, value, error = false) => {
     const newInput = formValue[input];
     newInput.value = value;
-    newInput.error = false;
+    newInput.error = error;
 
     setFormValue({
       ...formValue,
@@ -139,27 +139,39 @@ const CreateContainerForm = ({ containers }) => {
   };
 
   const handleSubmit = () => {
-    const env = validateList(envList).map((item) => `${item.first.value.toUpperCase()}=${item.second.value}`);
-    const exposed_ports = validateList(portList).map((item) => ({
-      host_port: item.second.value,
-      container_port: item.first.value,
-    }));
-    const mounts = validateList(mountList).map((item) => ({
-      name: item.first.value,
-      target: item.second.value,
-    }));
+    const formValueKeys = Object.keys(formValue);
+    formValueKeys.map((key) => {
+      if (formValue[key].required && !formValue[key].value) {
+        handleFormChange(key, '', true);
+      }
+    });
+
+    if (formValueKeys.some((key) => formValue[key].error)) {
+      return;
+    }
+
+    const payload = {
+      name: formValue.name.value,
+      image: formValue.image.value,
+      links: formValue.links.value || [],
+      env: validateList(envList).map((item) => `${item.first.value.toUpperCase()}=${item.second.value}`),
+      mounts: validateList(mountList).map((item) => ({
+        name: item.first.value,
+        target: item.second.value,
+      })),
+      exposed_ports: validateList(portList).map((item) => ({
+        host_port: item.second.value,
+        container_port: item.first.value,
+      })),
+    };
 
     api
-      .post('/containers', {
-        env,
-        mounts,
-        exposed_ports,
-        name: formValue.name.value,
-        image: formValue.image.value,
-        links: formValue.links.value || [],
-      })
+      .post('/containers', payload)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error.response.data.message);
       });
   };
 

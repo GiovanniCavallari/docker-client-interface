@@ -1,5 +1,9 @@
 @content-color: #f7f7fa;
+@error-color: rgb(249, 61, 61);
+@error-hover-color: rgb(198, 44, 44);
+
 @colspan12-space: 8px;
+@input-helper-space: 2px;
 
 p {
   margin-block-start: 0;
@@ -10,8 +14,16 @@ p {
 
 label {
   display: block;
-  padding-left: 2px;
-  margin-bottom: 2px;
+  padding-left: @input-helper-space;
+  margin-bottom: @input-helper-space;
+}
+
+.di-input-helper,
+.di-select-helper {
+  display: block;
+  color: @error-color;
+  padding-left: @input-helper-space;
+  margin-top: @input-helper-space;
 }
 
 .di-mb-16 {
@@ -52,9 +64,10 @@ label {
 
 .di-input-error,
 .di-select-error {
-  border: 1px solid rgb(249, 61, 61);
+  border: 1px solid @error-color;
+  transition: border-color ease-in-out 0s !important;
 
   &:hover {
-    border: 1px solid rgb(198, 44, 44) !important;
+    border: 1px solid @error-hover-color  !important;
   }
 }

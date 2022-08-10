@@ -1,9 +1,11 @@
 import React from 'react';
 import Props from 'prop-types';
-import { Input as RsuiteInput } from 'rsuite';
+import { Form, Input as RsuiteInput } from 'rsuite';
 
-const Input = ({ label, value, name, style, error, placeholder, onChange }) => {
+const Input = ({ label, value, name, style, placeholder, onChange, error = false }) => {
   const errorClass = error ? 'di-input-error' : '';
+
+  console.log(error)
 
   return (
     <>
@@ -16,6 +18,7 @@ const Input = ({ label, value, name, style, error, placeholder, onChange }) => {
         className={errorClass}
         placeholder={placeholder}
       />
+      {error && <Form.HelpText className="di-input-helper">Required field</Form.HelpText>}
     </>
   );
 };

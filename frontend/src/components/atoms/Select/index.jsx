@@ -1,8 +1,8 @@
 import React from 'react';
 import Props from 'prop-types';
-import { SelectPicker, TagPicker } from 'rsuite';
+import { Form, SelectPicker, TagPicker } from 'rsuite';
 
-const Select = ({ label, value, error, placeholder, onChange, multipleOptions = false, items = [] }) => {
+const Select = ({ label, value, placeholder, onChange, error = false, multipleOptions = false, items = [] }) => {
   const data = items.map((item) => ({
     label: item,
     value: item,
@@ -38,6 +38,8 @@ const Select = ({ label, value, error, placeholder, onChange, multipleOptions = 
           searchable={false}
         />
       )}
+
+      {error && <Form.HelpText className="di-input-helper">Required field</Form.HelpText>}
     </>
   );
 };
