@@ -3,7 +3,7 @@ import Props from 'prop-types';
 import { Loader as RsuiteLoader } from 'rsuite';
 
 const Loader = ({ size, backdrop = false, center = false }) => {
-  return <RsuiteLoader backdrop={backdrop} size={size} center={center} />;
+  return <RsuiteLoader backdrop={backdrop} size={size} center={center} className="di-loader" />;
 };
 
 Loader.propTypes = {

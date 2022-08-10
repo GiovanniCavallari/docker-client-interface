@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { Button, FlexboxGrid } from 'rsuite';
 import { FaPlus, FaArrowRight, FaEquals } from 'react-icons/fa';
 import { routes } from '../../../enums/routes';
-import { validateList } from '../../../helpers/validateList';
+import { validateList, scroll } from '../../../helpers';
 import api from '../../../services/api';
 
 import Card from '../../atoms/Card';
 import Input from '../../atoms/Input';
 import Select from '../../atoms/Select';
+import Loader from '../../atoms/Loader';
+import Message from '../../atoms/Message';
 import InputGroup from '../../molecules/InputGroup';
 
 import './styles.less';
@@ -56,6 +58,8 @@ const CreateContainerForm = ({ containers }) => {
 
   const navigate = useNavigate();
 
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [envList, setEnvList] = useState([baseEnv]);
   const [portList, setPortList] = useState([basePort]);
   const [mountList, setMountList] = useState([baseMount]);
@@ -139,6 +143,9 @@ const CreateContainerForm = ({ containers }) => {
   };
 
   const handleSubmit = () => {
+    setErrorMessage('');
+    setSubmitLoader(true);
+
     const formValueKeys = Object.keys(formValue);
     formValueKeys.map((key) => {
       if (formValue[key].required && !formValue[key].value) {
@@ -147,6 +154,7 @@ const CreateContainerForm = ({ containers }) => {
     });
 
     if (formValueKeys.some((key) => formValue[key].error)) {
+      setSubmitLoader(false);
       return;
     }
 
@@ -171,12 +179,23 @@ const CreateContainerForm = ({ containers }) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error(error.response.data.message);
+        setErrorMessage(error.response.data.message);
+      })
+      .finally(() => {
+        setSubmitLoader(false);
+        scroll({ smooth: true });
       });
   };
 
   return (
     <>
+      {submitLoader && <Loader backdrop center size="lg" />}
+      {errorMessage && (
+        <Message closable type="error" className="di-mb-24">
+          {errorMessage}
+        </Message>
+      )}
+
       <Card title="General">
         <FlexboxGrid className="di-mb-16">
           <FlexboxGrid.Item colspan={12} className="di-colspan-12">

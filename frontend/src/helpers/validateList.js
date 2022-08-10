@@ -11,4 +11,4 @@ const validateList = (list) => {
     .filter((item) => item);
 };
 
-export { validateList };
+export default validateList;

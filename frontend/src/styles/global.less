@@ -1,9 +1,20 @@
 @content-color: #f7f7fa;
 @error-color: rgb(249, 61, 61);
 @error-hover-color: rgb(198, 44, 44);
+@loader-background-color: rgba(255, 255, 255, 0.7);
+@loader-after-color: #d1e6f5;
+@loader-before-color: #2496ed;
 
 @colspan12-space: 8px;
 @input-helper-space: 2px;
+
+body {
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+}
 
 p {
   margin-block-start: 0;
@@ -28,6 +39,10 @@ label {
 
 .di-mb-16 {
   margin-bottom: 16px !important;
+}
+
+.di-mb-24 {
+  margin-bottom: 24px !important;
 }
 
 .di-top-16 {
@@ -69,5 +84,21 @@ label {
 
   &:hover {
     border: 1px solid @error-hover-color  !important;
+  }
+}
+
+.di-loader {
+  z-index: 10;
+
+  .rs-loader-backdrop {
+    background-color: @loader-background-color;
+  }
+
+  .rs-loader-spin::before {
+    border: 3px solid @loader-before-color;
+  }
+
+  .rs-loader-spin::after {
+    border-color: @loader-after-color transparent transparent;
   }
 }

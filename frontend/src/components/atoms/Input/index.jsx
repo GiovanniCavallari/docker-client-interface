@@ -5,8 +5,6 @@ import { Form, Input as RsuiteInput } from 'rsuite';
 const Input = ({ label, value, name, style, placeholder, onChange, error = false }) => {
   const errorClass = error ? 'di-input-error' : '';
 
-  console.log(error)
-
   return (
     <>
       <label>{label}</label>
