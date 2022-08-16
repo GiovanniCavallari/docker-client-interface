@@ -20,6 +20,22 @@ const Volumes = () => {
 
   const { data, error, mutate } = useFetch('/volumes');
 
+  const handleClose = () => {
+    if (messageType === 'success') {
+      setMessage('');
+    }
+  };
+
+  const handleRefresh = () => {
+    setMessage('');
+    setMessageType('error');
+    mutate().then(() => setMessage(error?.message || error?.response?.data?.message));
+  };
+
+  const handleModal = () => {
+    setOpenModal(!openModal);
+  };
+
   const handlePruneVolumes = () => {
     setMessage('');
 
@@ -38,18 +54,15 @@ const Volumes = () => {
       });
   };
 
-  const handleRefresh = () => {
-    setMessage('');
-    setMessageType('error');
-    mutate().then(() => setMessage(error?.message || error?.response?.data?.message));
-  };
-
-  const handleModal = () => {
-    setOpenModal(!openModal);
-  };
-
   const Header = () => (
-    <ContentHeader action refresh title="Volumes" onRefreshClick={handleRefresh} onButtonClick={handleModal}>
+    <ContentHeader
+      action
+      refresh
+      title="Volumes"
+      buttonColor="red"
+      onButtonClick={handleModal}
+      onRefreshClick={handleRefresh}
+    >
       <FaTrashAlt /> Prune volumes
     </ContentHeader>
   );
@@ -66,7 +79,7 @@ const Volumes = () => {
   );
 
   const VolumesMessage = () => (
-    <Message closable type={messageType} className="di-mb-24">
+    <Message closable className="di-mb-24" type={messageType} onClose={handleClose}>
       {error?.message || error?.response?.data?.message || message}
     </Message>
   );
@@ -77,7 +90,7 @@ const Volumes = () => {
         <Content className="di-admin-content">
           <Header />
 
-          {message && messageType === 'error' && <VolumesMessage />}
+          {message && <VolumesMessage />}
           {error && !message && <VolumesMessage />}
 
           <CardLoading type="grid" />

@@ -175,8 +175,8 @@ const CreateContainerForm = ({ containers }) => {
 
     api
       .post('/containers', payload)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
+        navigate(routes.INDEX);
       })
       .catch((error) => {
         setErrorMessage(error.response.data.message);

@@ -5,7 +5,17 @@ import { FaHistory } from 'react-icons/fa';
 
 import './styles.less';
 
-const ContentHeader = ({ title, children, onButtonClick, onRefreshClick, action = false, refresh = false }) => {
+const ContentHeader = ({
+  title,
+  children,
+  buttonColor,
+  onButtonClick,
+  onRefreshClick,
+  action = false,
+  refresh = false,
+}) => {
+  const color = buttonColor || 'blue';
+
   return (
     <div className="di-title-container">
       <h3>{title}</h3>
@@ -18,7 +28,7 @@ const ContentHeader = ({ title, children, onButtonClick, onRefreshClick, action 
         )}
 
         {action && (
-          <Button color="blue" appearance="primary" onClick={onButtonClick}>
+          <Button color={color} appearance="primary" onClick={onButtonClick}>
             {children}
           </Button>
         )}
@@ -32,6 +42,7 @@ ContentHeader.propTypes = {
   children: Props.node,
   action: Props.bool,
   refresh: Props.bool,
+  buttonColor: Props.oneOf(['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'violet']),
   onButtonClick: Props.func,
   onRefreshClick: Props.func,
 };
