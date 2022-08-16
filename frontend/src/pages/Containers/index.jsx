@@ -12,8 +12,6 @@ import ContentHeader from '../../components/molecules/ContentHeader';
 import Container from '../../components/organisms/Container';
 import AdminTemplate from '../../components/templates/Admin';
 
-import './styles.less';
-
 const Containers = () => {
   const navigate = useNavigate();
   const { data, error, mutate } = useFetch('/containers');

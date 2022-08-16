@@ -103,3 +103,46 @@ label {
     border-color: @loader-after-color transparent transparent;
   }
 }
+
+.di-list {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  p {
+    padding: 0 0 4px;
+  }
+
+  p+p {
+    margin: 0;
+  }
+
+  .di-list-item {
+    &:not(:last-child) {
+      padding-right: 16px;
+    }
+
+    .di-list-title {
+      font-weight: 600;
+    }
+
+    .di-id {
+      font-size: 11px;
+    }
+
+    .di-list-item-info {
+      display: flex;
+      align-items: center;
+
+      .di-list-item-tag {
+        margin: 0 6px 0 0;
+      }
+    }
+  }
+
+  .di-list-item-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

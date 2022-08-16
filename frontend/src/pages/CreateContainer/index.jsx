@@ -6,8 +6,6 @@ import ContentHeader from '../../components/molecules/ContentHeader';
 import CreateContainerForm from '../../components/organisms/CreateContainerForm';
 import AdminTemplate from '../../components/templates/Admin';
 
-import './styles.less';
-
 const CreateContainer = () => {
   const [containers, setContainers] = useState([]);
 

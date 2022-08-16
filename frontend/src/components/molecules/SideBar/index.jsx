@@ -16,14 +16,9 @@ const SidebarMenu = () => {
       onClick: () => navigate(routes.INDEX),
     },
     {
-      text: 'Compose',
-      icon: <FaThList />,
-      onClick: () => {},
-    },
-    {
       text: 'Volumes',
       icon: <FaDatabase />,
-      onClick: () => {},
+      onClick: () => navigate(routes.VOLUMES),
     },
   ];
 
