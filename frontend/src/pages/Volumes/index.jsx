@@ -3,6 +3,7 @@ import { mutate as globalMutate } from 'swr';
 import { Content } from 'rsuite';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useFetch } from '../../hooks/useFetch';
+import useVolumeMessageStore from '../../store/useVolumesMessages';
 import api from '../../services/api';
 
 import Card from '../../components/atoms/Card';
@@ -14,21 +15,17 @@ import Volume from '../../components/organisms/Volume';
 import AdminTemplate from '../../components/templates/Admin';
 
 const Volumes = () => {
-  const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState('error');
-  const [openModal, setOpenModal] = useState(false);
+  const { messageType, message, setMessage } = useVolumeMessageStore((state) => ({
+    message: state.message,
+    messageType: state.type,
+    setMessage: state.setMessage,
+  }));
 
+  const [openModal, setOpenModal] = useState(false);
   const { data, error, mutate } = useFetch('/volumes');
 
-  const handleClose = () => {
-    if (messageType === 'success') {
-      setMessage('');
-    }
-  };
-
   const handleRefresh = () => {
-    setMessage('');
-    setMessageType('error');
+    setMessage(null);
     mutate().then(() => setMessage(error?.message || error?.response?.data?.message));
   };
 
@@ -37,14 +34,13 @@ const Volumes = () => {
   };
 
   const handlePruneVolumes = () => {
-    setMessage('');
+    setMessage(null);
 
     api
       .post('/volumes/prune')
       .then(() => {
         globalMutate('/volumes');
-        setMessageType('success');
-        setMessage('Volumes successfully pruned');
+        setMessage('Volumes successfully pruned', 'success');
       })
       .catch((error) => {
         setMessage(error?.message || error?.response?.data?.message);
@@ -79,8 +75,8 @@ const Volumes = () => {
   );
 
   const VolumesMessage = () => (
-    <Message closable className="di-mb-24" type={messageType} onClose={handleClose}>
-      {error?.message || error?.response?.data?.message || message}
+    <Message closable className="di-mb-24" type={messageType}>
+      {message || error?.response?.data?.message || error?.message}
     </Message>
   );
 
@@ -89,10 +85,7 @@ const Volumes = () => {
       <AdminTemplate>
         <Content className="di-admin-content">
           <Header />
-
-          {message && <VolumesMessage />}
-          {error && !message && <VolumesMessage />}
-
+          {error && <VolumesMessage />}
           <CardLoading type="grid" />
         </Content>
         <PruneModal />

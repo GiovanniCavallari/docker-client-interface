@@ -3,6 +3,7 @@ import Props from 'prop-types';
 import { mutate as globalMutate } from 'swr';
 import { FaTrashAlt, FaInfoCircle } from 'react-icons/fa';
 import api from '../../../services/api';
+import useVolumeMessageStore from '../../../store/useVolumesMessages';
 
 import Modal from '../../atoms/Modal';
 import Drawer from '../../atoms/Drawer';
@@ -10,6 +11,8 @@ import JsonInspector from '../../atoms/JsonInspector';
 import VolumeItem from '../../molecules/VolumeItem';
 
 const Volume = ({ volume }) => {
+  const setMessage = useVolumeMessageStore((state) => state.setMessage);
+
   const [openModal, setOpenModal] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
 
@@ -18,10 +21,15 @@ const Volume = ({ volume }) => {
   };
 
   const handleSuccessModal = () => {
+    setMessage(null);
+
     api
       .post(`/volumes/${volume.name}/remove`)
       .then(() => {
         globalMutate('/volumes');
+      })
+      .catch((err) => {
+        setMessage(err.response.data.message);
       })
       .finally(() => {
         setOpenModal(false);
