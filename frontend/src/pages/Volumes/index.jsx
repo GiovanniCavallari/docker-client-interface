@@ -15,27 +15,32 @@ import Volume from '../../components/organisms/Volume';
 import AdminTemplate from '../../components/templates/Admin';
 
 const Volumes = () => {
-  const { messageType, message, setMessage } = useVolumeMessageStore((state) => ({
+  const { messageType, message, setMessage, clearMessage } = useVolumeMessageStore((state) => ({
     message: state.message,
     messageType: state.type,
     setMessage: state.setMessage,
+    clearMessage: state.clearMessage,
   }));
 
   const [openModal, setOpenModal] = useState(false);
   const { data, error, mutate } = useFetch('/volumes');
 
   const handleRefresh = () => {
-    setMessage(null);
+    clearMessage();
     mutate().then(() => setMessage(error?.message || error?.response?.data?.message));
   };
 
   const handleModal = () => {
-    setMessage(null);
+    clearMessage();
     setOpenModal(!openModal);
   };
 
+  const handleMessageClose = () => {
+    clearMessage();
+  };
+
   const handlePruneVolumes = () => {
-    setMessage(null);
+    clearMessage();
 
     api
       .post('/volumes/prune')
@@ -76,7 +81,7 @@ const Volumes = () => {
   );
 
   const VolumesMessage = () => (
-    <Message closable className="di-mb-24" type={messageType}>
+    <Message closable className="di-mb-24" duration={0} type={messageType} onClose={handleMessageClose}>
       {message || error?.response?.data?.message || error?.message}
     </Message>
   );

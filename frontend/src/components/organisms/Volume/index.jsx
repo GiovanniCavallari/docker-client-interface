@@ -11,7 +11,10 @@ import JsonInspector from '../../atoms/JsonInspector';
 import VolumeItem from '../../molecules/VolumeItem';
 
 const Volume = ({ volume }) => {
-  const setMessage = useVolumeMessageStore((state) => state.setMessage);
+  const { setMessage, clearMessage } = useVolumeMessageStore((state) => ({
+    setMessage: state.setMessage,
+    clearMessage: state.clearMessage,
+  }));
 
   const [openModal, setOpenModal] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
@@ -21,7 +24,7 @@ const Volume = ({ volume }) => {
   };
 
   const handleSuccessModal = () => {
-    setMessage(null);
+    clearMessage();
 
     api
       .post(`/volumes/${volume.name}/remove`)
