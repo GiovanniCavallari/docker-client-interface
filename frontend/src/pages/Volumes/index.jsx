@@ -30,6 +30,7 @@ const Volumes = () => {
   };
 
   const handleModal = () => {
+    setMessage(null);
     setOpenModal(!openModal);
   };
 
