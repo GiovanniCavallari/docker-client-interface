@@ -20,12 +20,12 @@ const Containers = () => {
 
   const handleRefresh = () => {
     setErrorMessage('');
-    mutate().then(() => setErrorMessage(error?.message || error?.response?.data?.message));
+    mutate().then(() => setErrorMessage(error?.response?.data?.message || error?.message));
   };
 
   const ErrorMessage = () => (
     <Message closable type="error" className="di-mb-24">
-      {error?.message || error?.response?.data?.message}
+      {error?.response?.data?.message || error?.message}
     </Message>
   );
 

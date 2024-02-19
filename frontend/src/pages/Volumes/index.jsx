@@ -23,7 +23,7 @@ const Volumes = () => {
 
   const handleRefresh = () => {
     clearMessage();
-    mutate().then(() => setMessage(error?.message || error?.response?.data?.message));
+    mutate().then(() => setMessage(error?.response?.data?.message || error?.message));
   };
 
   const handleModal = () => {
